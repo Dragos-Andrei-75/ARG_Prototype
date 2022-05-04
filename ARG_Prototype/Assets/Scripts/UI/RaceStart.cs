@@ -2,10 +2,13 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class CountDownStart : MonoBehaviour
+public class RaceStart : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI textStart;
-    [SerializeField] private UIFade uiFade;
+    private TextMeshProUGUI textStart;
+    private UIFade uiFade;
+
+    private CarController carController;
+    private GameObject[] objectsUI;
 
     private float countDownTime = 1.0f;
     private int textToInt = 0;
@@ -15,7 +18,17 @@ public class CountDownStart : MonoBehaviour
         textStart = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         uiFade = gameObject.GetComponent<UIFade>();
 
+        carController = GameObject.FindGameObjectWithTag("Player").GetComponent<CarController>();
+        objectsUI = GameObject.FindGameObjectsWithTag("UI");
+
         textStart.text = "3";
+
+        carController.enabled = false;
+
+        for (int i = 0; i < objectsUI.Length; i++)
+        {
+            objectsUI[i].gameObject.SetActive(false);
+        }
 
         StartCoroutine(CountDown());
     }
@@ -37,6 +50,13 @@ public class CountDownStart : MonoBehaviour
         textStart.text = "GO";
 
         StartCoroutine(uiFade.FadeDelay(1));
+
+        carController.enabled = true;
+
+        for (int i = 0; i < objectsUI.Length; i++)
+        {
+            objectsUI[i].gameObject.SetActive(true);
+        }
 
         yield break;
     }

@@ -3,7 +3,7 @@ using TMPro;
 
 public class Clock : MonoBehaviour
 {
-    private TextMeshProUGUI clockText;
+    static public TextMeshProUGUI textClock;
 
     private int hours = 0;
     private int minutes = 0;
@@ -15,10 +15,15 @@ public class Clock : MonoBehaviour
 
     private void Start()
     {
-        clockText = gameObject.GetComponent<TextMeshProUGUI>();
+        textClock = gameObject.GetComponent<TextMeshProUGUI>();
     }
 
     private void FixedUpdate()
+    {
+        Timer();
+    }
+
+    private void Timer()
     {
         miliseconds += Mathf.Round(Time.fixedDeltaTime * 1000) / 1000;
 
@@ -54,6 +59,6 @@ public class Clock : MonoBehaviour
         stringMinutes = minutes < 10 ? "0" + minutes.ToString() : minutes.ToString();
         stringSeconds = seconds < 10 ? "0" + seconds.ToString() : seconds.ToString();
 
-        clockText.text = stringHours + ":" + stringMinutes + ":" + stringSeconds;
+        textClock.text = stringHours + ":" + stringMinutes + ":" + stringSeconds;
     }
 }

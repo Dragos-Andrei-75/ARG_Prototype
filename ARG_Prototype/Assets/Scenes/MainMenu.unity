@@ -264,7 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 1.25
   delta: 0
-  fadeInOnStart: 1
+  initialFade: 1
   gameplayUI: 0
 --- !u!1 &280965796
 GameObject:

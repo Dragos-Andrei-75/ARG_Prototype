@@ -9,7 +9,7 @@ public class UIFade : MonoBehaviour
 
     public float delay = 0.0f;
     [SerializeField] private float delta = 0.0f;
-    [SerializeField] private bool fadeInOnStart = false;
+    [SerializeField] private bool initialFade = false;
     [SerializeField] private bool gameplayUI = false;
 
     private void Start()
@@ -19,12 +19,11 @@ public class UIFade : MonoBehaviour
         if (gameplayUI == true) pause = GameObject.Find("Menu").GetComponent<Pause>();
 
         delta = Time.fixedDeltaTime * 10;
-
-        if (fadeInOnStart == true) StartCoroutine(FadeDelay(delay));
     }
 
     private void OnEnable()
     {
+        if (initialFade == true) StartCoroutine(FadeDelay(delay));
         if (gameplayUI == true) Pause.onPause += HandleUI;
     }
 
