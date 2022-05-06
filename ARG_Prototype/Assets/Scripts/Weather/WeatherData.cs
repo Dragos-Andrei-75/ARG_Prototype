@@ -1,43 +1,48 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
-using System;
 using System.Collections;
+using SimpleJSON;
 
 public class WeatherData : MonoBehaviour
 {
-	private WeatherInfo weatherInfo;
-	private FindLocation findLocation;
 	private TextMeshProUGUI textWeatherCurrent;
+
+	private FindLocation findLocation;
+	private JSONNode weatherInfo;
 
 	private string apiKey = "c8f99e79f0bb84c2be80658b48c16be1";
 	private string uri;
-	private float timer;
-	private float updateIntervalMinutes;
+	private float timer = 0;
+	private float updateIntervalMinutes = 10;
+
 	private string city;
 	private float latitude;
 	private float longitude;
-	private bool locationFound;
+	private bool locationFound = false;
 	private bool useCity = false;
+
+	private string weatherMain;
 
     private void Start()
     {
+		textWeatherCurrent = gameObject.GetComponent<TextMeshProUGUI>();
 		findLocation = gameObject.transform.root.GetComponent<FindLocation>();
 		uri = "https://api.openweathermap.org/data/2.5/weather?";
     }
 
-    private void Update()
+    private void FixedUpdate()
 	{
 		if (locationFound == true)
 		{
 			if (timer <= 0)
 			{
-				StartCoroutine(GetWeatherInfo());
 				timer = updateIntervalMinutes * 60;
+				StartCoroutine(GetWeatherInfo());
 			}
 			else
 			{
-				timer -= Time.deltaTime;
+				timer -= Time.fixedDeltaTime;
 			}
 		}
 	}
@@ -61,7 +66,7 @@ public class WeatherData : MonoBehaviour
 			uri += "lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey;
 		}
 
-		var webRequest = new UnityWebRequest(uri)
+		var webRequest = new UnityWebRequest("https://api.openweathermap.org/data/2.5/weather?q=Timisoara,Ro&appid=c8f99e79f0bb84c2be80658b48c16be1")
 		{
 			downloadHandler = new DownloadHandlerBuffer()
 		};
@@ -74,41 +79,17 @@ public class WeatherData : MonoBehaviour
 			yield break;
 		}
 
-		weatherInfo = JsonUtility.FromJson<WeatherInfo>(webRequest.downloadHandler.text);
-		textWeatherCurrent.text = "Current Weather: " + weatherInfo;
+		weatherInfo = JSON.Parse(webRequest.downloadHandler.text);
+
+		weatherMain = weatherInfo["weather"][0]["main"];
+
+		//textWeatherCurrent.text = "Current Weather: " + weatherInfo["weather"].ToString() + " | " + weatherInfo["name"].ToString();
+		textWeatherCurrent.text = "Current Weather: " + weatherMain.ToString();
+
+		//Debug.Log("Weather Info: " + weatherInfo["weather"].ToString());
+		//Debug.Log("Main Weather Info: " + weatherMain);
+		//Debug.Log("City: " + weatherInfo["name"]);
+
+		yield break;
 	}
-}
-
-[Serializable]
-public class WeatherInfo
-{
-	public float latitude;
-	public float longitude;
-	public string timezone;
-	public Currently currently;
-	public int offset;
-}
-
-[Serializable]
-public class Currently
-{
-	public int time;
-	public string summary;
-	public string icon;
-	public int nearestStormDistance;
-	public int nearestStormBearing;
-	public int precipIntensity;
-	public int precipProbability;
-	public double temperature;
-	public double apparentTemperature;
-	public double dewPoint;
-	public double humidity;
-	public double pressure;
-	public double windSpeed;
-	public double windGust;
-	public int windBearing;
-	public int cloudCover;
-	public int uvIndex;
-	public double visibility;
-	public double ozone;
 }

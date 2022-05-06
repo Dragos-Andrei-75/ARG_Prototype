@@ -4,8 +4,8 @@ using System.Collections;
 
 public class FindLocation : MonoBehaviour
 {
+	private WeatherData weatherData;
 	public LocationInfo locationInfo;
-	public WeatherData weatherData;
 
 	public string city;
 	public float latitude;
@@ -15,6 +15,8 @@ public class FindLocation : MonoBehaviour
 
 	private void Start()
 	{
+		weatherData = gameObject.transform.GetChild(0).GetComponent<WeatherData>();
+
 		StartCoroutine(GetIP());
 	}
 
@@ -36,30 +38,34 @@ public class FindLocation : MonoBehaviour
 		IPAddress = webRequest.downloadHandler.text;
 
 		StartCoroutine(GetCoordinates());
+
+		yield break;
 	}
 
 	private IEnumerator GetCoordinates()
 	{
-		var www = new UnityWebRequest("http://ip-api.com/json/" + IPAddress)
+		var webRequest = new UnityWebRequest("http://ip-api.com/json/" + IPAddress)
 		{
 			downloadHandler = new DownloadHandlerBuffer()
 		};
 
-		yield return www.SendWebRequest();
+		yield return webRequest.SendWebRequest();
 
-		if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+		if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
 		{
-			Debug.Log("Web Request Error");
+			Debug.Log("Web Request Error: " + webRequest.result);
 			yield break;
 		}
 
-		locationInfo = JsonUtility.FromJson<LocationInfo>(www.downloadHandler.text);
+		locationInfo = JsonUtility.FromJson<LocationInfo>(webRequest.downloadHandler.text);
 
 		city = locationInfo.city;
 		latitude = locationInfo.lat;
 		longitude = locationInfo.lon;
 
 		weatherData.Begin();
+
+		yield break;
 	}
 }
 
