@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
 using System.Collections;
+
 using SimpleJSON;
 
 public class WeatherData : MonoBehaviour
@@ -9,6 +10,7 @@ public class WeatherData : MonoBehaviour
 	private TextMeshProUGUI textWeatherCurrent;
 
 	private FindLocation findLocation;
+	public  WeatherManager weatherManager;
 	private JSONNode weatherInfo;
 
 	private string apiKey = "c8f99e79f0bb84c2be80658b48c16be1";
@@ -22,7 +24,7 @@ public class WeatherData : MonoBehaviour
 	private bool locationFound = false;
 	private bool useCity = false;
 
-	private string weatherMain;
+	public string weatherMain;
 
     private void Start()
     {
@@ -84,11 +86,9 @@ public class WeatherData : MonoBehaviour
 		weatherMain = weatherInfo["weather"][0]["main"];
 
 		//textWeatherCurrent.text = "Current Weather: " + weatherInfo["weather"].ToString() + " | " + weatherInfo["name"].ToString();
-		textWeatherCurrent.text = "Current Weather: " + weatherMain.ToString();
+		textWeatherCurrent.text = "Current Weather: " + weatherMain;
 
-		//Debug.Log("Weather Info: " + weatherInfo["weather"].ToString());
-		//Debug.Log("Main Weather Info: " + weatherMain);
-		//Debug.Log("City: " + weatherInfo["name"]);
+		weatherManager.enabled = true;
 
 		yield break;
 	}
