@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Camera Position Z")]
     [SerializeField] private float cameraPositionZ;
-    [SerializeField] private float desiredPositionZ = 5.0f;
+    [SerializeField] private float desiredPositionZ = 5.5f;
     [SerializeField] private float distanceMultiplier = 0.05f;
     [SerializeField] private float dampDistance;
     private float velocityZ;

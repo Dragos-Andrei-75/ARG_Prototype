@@ -15,7 +15,7 @@ public class Suspension : MonoBehaviour
     private int carLayer;
 
     [Header("Spring Attributes")]
-    [SerializeField] public float springRestLength = 0.25f;
+    [SerializeField] public float springRestLength = 0.5f;
     [SerializeField] private float springTravelUp = 0.25f;
     [SerializeField] private float springTravelDown = 0.25f;
     [SerializeField] private float springMinLength;
