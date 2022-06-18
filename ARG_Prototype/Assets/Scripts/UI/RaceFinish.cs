@@ -43,7 +43,7 @@ public class RaceFinish : MonoBehaviour
 
     private void FinishRace()
     {
-        textRecordedTime.text = Clock.textClock.text;
+        textRecordedTime.text = "Finish\n" + Clock.textClock.text;
 
         carController.enabled = false;
 

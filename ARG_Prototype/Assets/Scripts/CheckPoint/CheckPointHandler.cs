@@ -14,7 +14,7 @@ public class CheckPointHandler : MonoBehaviour
 
     //Checkpoint Attributes
     [SerializeField] private static int checkPointAmount;
-    public static int lapsTotal = 3;
+    public static int lapsTotal = 2;
     public int index;
 
     public delegate void Finish();
@@ -59,6 +59,7 @@ public class CheckPointHandler : MonoBehaviour
             {
                 carLap.checkPointIndex = 1;
                 carLap.lap++;
+                carLap.checkPointTransform = checkPointTransform;
 
                 if (carLap.lap != lapsTotal)
                 {
@@ -71,7 +72,9 @@ public class CheckPointHandler : MonoBehaviour
             }
             else
             {
-                Vector3 checkPointPosition = new Vector3(carLap.checkPointTransform.position.x, 0.75f, carLap.checkPointTransform.position.z);
+                float positionY = carLap.checkPointTransform.position.y - (carLap.checkPointTransform.lossyScale.y / 2.0f) + 0.5f;
+
+                Vector3 checkPointPosition = new Vector3(carLap.checkPointTransform.position.x, positionY, carLap.checkPointTransform.position.z);
                 Vector3 checkPointRotation = carLap.checkPointTransform.eulerAngles;
 
                 StartCoroutine(carReset.ResetCarCheckPoint(checkPointPosition, checkPointRotation));

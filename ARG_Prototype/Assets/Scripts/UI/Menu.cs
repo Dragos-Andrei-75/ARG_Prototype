@@ -5,14 +5,14 @@ public class Menu : MonoBehaviour
 {
     public void LoadLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void QuitGame()
@@ -25,5 +25,8 @@ public class Menu : MonoBehaviour
         {
             Application.Quit();
         }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

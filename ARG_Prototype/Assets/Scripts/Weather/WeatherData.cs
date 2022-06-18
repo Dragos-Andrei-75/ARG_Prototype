@@ -16,7 +16,7 @@ public class WeatherData : MonoBehaviour
 	private string apiKey = "c8f99e79f0bb84c2be80658b48c16be1";
 	private string uri;
 	private float timer = 0;
-	private float updateIntervalMinutes = 10;
+	private float updateIntervalMinutes = 2;
 
 	private string city;
 	private float latitude;

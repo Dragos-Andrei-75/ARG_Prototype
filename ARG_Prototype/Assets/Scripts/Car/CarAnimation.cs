@@ -13,7 +13,7 @@ public class CarAnimation : MonoBehaviour
     [SerializeField] private float ackermannSteerLeft;
     [SerializeField] private float ackermannSteerRight;
     [SerializeField] private float wheelTurnRadius = 5.0f;
-    [SerializeField] private float steerForceMin = 0.375f;
+    [SerializeField] private float steerForceMin = 0.5f;
     [SerializeField] private float steerForceMax = 1.0f;
     [SerializeField] private float steerForce;
 

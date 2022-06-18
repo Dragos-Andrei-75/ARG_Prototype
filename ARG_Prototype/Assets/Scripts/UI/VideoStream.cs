@@ -5,19 +5,23 @@ using System.Collections;
 
 public class VideoStream : MonoBehaviour
 {
-    private RawImage rawImage;
-    private VideoPlayer videoPlayer;
+    public RawImage rawImage;
+    public VideoPlayer videoPlayer;
+    public VideoClip videoClip;
 
-    private void Start()
+    private void Awake()
     {
         rawImage = gameObject.GetComponent<RawImage>();
         videoPlayer = gameObject.GetComponent<VideoPlayer>();
+        videoPlayer.clip = videoClip;
 
         StartCoroutine(PlayVideo());
     }
 
     private IEnumerator PlayVideo()
     {
+        Time.timeScale = 1;
+
         WaitForSeconds wait = new WaitForSeconds(1);
 
         videoPlayer.Prepare();
@@ -31,5 +35,7 @@ public class VideoStream : MonoBehaviour
         rawImage.texture = videoPlayer.texture;
 
         videoPlayer.Play();
+
+        yield break;
     }
 }

@@ -8,6 +8,11 @@ public class WeatherManager : MonoBehaviour
 	[SerializeField] private GameObject objectRain;
 	[SerializeField] private GameObject objectSnow;
 
+	[SerializeField] private Material materialClouds;
+	[SerializeField] private ParticleSystem particleSystemWeaher;
+
+	[SerializeField] private Transform playerCar;
+
 	public WeatherData weatherData;
 
 	[SerializeField] private string weatherCurrent;
@@ -21,15 +26,15 @@ public class WeatherManager : MonoBehaviour
 
 	private void Start()
 	{
-//		objectClear = gameObject.transform.GetChild(0).gameObject;
-//		objectClouds = gameObject.transform.GetChild(1).gameObject;
-//		objectRain = gameObject.transform.GetChild(2).gameObject;
-//		objectSnow = gameObject.transform.GetChild(3).gameObject;
+		//		objectClear = gameObject.transform.GetChild(0).gameObject;
+		//		objectClouds = gameObject.transform.GetChild(1).gameObject;
+		//		objectRain = gameObject.transform.GetChild(2).gameObject;
+		//		objectSnow = gameObject.transform.GetChild(3).gameObject;
 
-//		objectClear.SetActive(false);
-//		objectClouds.SetActive(false);
-//		objectRain.SetActive(false);
-//		objectSnow.SetActive(false);
+		//		objectClear.SetActive(false);
+		//		objectClouds.SetActive(false);
+		//		objectRain.SetActive(false);
+		//		objectSnow.SetActive(false);
 
 		weatherCurrent = weatherData.weatherMain;
 		weatherEnableTime = 1.25f;
@@ -62,6 +67,12 @@ public class WeatherManager : MonoBehaviour
 		{
 			StartCoroutine(None());
 		}
+
+		if ((objectRain.activeSelf == true || objectSnow.activeSelf == true) && particleSystemWeaher != null)
+		{
+			ParticleSystem.ShapeModule shapeModule = particleSystemWeaher.shape;
+			shapeModule.position = new Vector3(playerCar.position.x, 50.0f, playerCar.position.z);
+		}
 	}
 
 	private IEnumerator SpawnClear()
@@ -70,6 +81,8 @@ public class WeatherManager : MonoBehaviour
 
 		clear = true;
 		objectClear.SetActive(true);
+
+		particleSystemWeaher = objectClear.GetComponent<ParticleSystem>();
 
 		if (clouds == true) StartCoroutine(DisableClouds());
 		else if (rain == true) StartCoroutine(DisableRain());
@@ -85,6 +98,10 @@ public class WeatherManager : MonoBehaviour
 		clouds = true;
 		objectClouds.SetActive(true);
 
+		particleSystemWeaher = objectClouds.GetComponent<ParticleSystem>();
+
+		RenderSettings.skybox = materialClouds;
+
 		if (clear == true) StartCoroutine(DisableClear());
 		else if (rain == true) StartCoroutine(DisableRain());
 		else if (snow == true) StartCoroutine(DisableSnow());
@@ -98,6 +115,8 @@ public class WeatherManager : MonoBehaviour
 
 		rain = true;
 		objectRain.SetActive(true);
+
+		particleSystemWeaher = objectRain.GetComponent<ParticleSystem>();
 
 		if (clear == true) StartCoroutine(DisableClear());
 		else if (clouds == true) StartCoroutine(DisableClouds());
@@ -113,6 +132,8 @@ public class WeatherManager : MonoBehaviour
 		snow = true;
 		objectSnow.SetActive(true);
 
+		particleSystemWeaher = objectSnow.GetComponent<ParticleSystem>();
+
 		if (clear == true) StartCoroutine(DisableClear());
 		else if (clouds == true) StartCoroutine(DisableClouds());
 		else if (rain == true) StartCoroutine(DisableRain());
@@ -126,6 +147,8 @@ public class WeatherManager : MonoBehaviour
 
 		none = true;
 
+		particleSystemWeaher = null;
+
 		if (clear == true) StartCoroutine(DisableClear());
 		else if (clouds == true) StartCoroutine(DisableClouds());
 		else if (rain == true) StartCoroutine(DisableRain());
@@ -138,8 +161,6 @@ public class WeatherManager : MonoBehaviour
 	{
 		clear = false;
 
-		//objectClear.GetComponent<Animator>().Play("sunny_exit");
-
 		yield return new WaitForSeconds(weatherDisableTime);
 
 		objectClear.SetActive(false);
@@ -150,8 +171,6 @@ public class WeatherManager : MonoBehaviour
 	private IEnumerator DisableClouds()
 	{
 		clouds = false;
-
-		//objectClouds.GetComponent<Animator>().Play("cloudy_exit");
 
 		yield return new WaitForSeconds(weatherDisableTime);
 
@@ -164,9 +183,6 @@ public class WeatherManager : MonoBehaviour
 	{
 		rain = false;
 
-		//objectRain.GetComponent<ParticleSystem>().Stop();
-		//objectRain.GetComponent<Animator>().Play("rain_exit");
-
 		yield return new WaitForSeconds(weatherDisableTime);
 
 		objectRain.SetActive(false);
@@ -177,9 +193,6 @@ public class WeatherManager : MonoBehaviour
 	private IEnumerator DisableSnow()
 	{
 		snow = false;
-
-		//objectSnow.GetComponent<ParticleSystem>().Stop();
-		//objectSnow.GetComponent<Animator>().Play("snow_exit");
 
 		yield return new WaitForSeconds(weatherDisableTime);
 

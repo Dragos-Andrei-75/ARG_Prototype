@@ -1218,3 +1218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a8d2154848bfb4fbe9491346f817e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rawImage: {fileID: 0}
+  videoPlayer: {fileID: 0}
+  videoClip: {fileID: 32900000, guid: c233816867174a642a7447b06d9d1828, type: 3}

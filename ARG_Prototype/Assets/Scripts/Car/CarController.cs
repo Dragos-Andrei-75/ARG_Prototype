@@ -18,7 +18,7 @@ public class CarController : MonoBehaviour
     [Tooltip("Specify the Drivetrain type of this vehicle(FWD, RWD, AWD).")]
     public string driveTrain = "RWD";
     public float topSpeedForward = 50.0f;
-    public float topSpeedBackward = 25.0f;
+    public float topSpeedBackward = 12.5f;
 
     [Header("User Input")]
     [SerializeField] public  InputPlayerCar inputPlayerCar;
@@ -42,8 +42,8 @@ public class CarController : MonoBehaviour
         inputPlayerCar = new InputPlayerCar();
 
         inputActionAccelerate = inputPlayerCar.Car.Accelerate;
-        inputActionAccelerate.started += _ => smoothTimeAccelerate = 1.0f;
-        inputActionAccelerate.canceled += _ => smoothTimeAccelerate = 0.75f;
+        inputActionAccelerate.started += _ => smoothTimeAccelerate = 1.25f;
+        inputActionAccelerate.canceled += _ => smoothTimeAccelerate = 1.5f;
 
         inputActionSteer = inputPlayerCar.Car.Steer;
 
